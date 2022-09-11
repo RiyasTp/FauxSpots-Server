@@ -1,6 +1,8 @@
 const db = require("./config/connection")
 const express = require("express")
 const app = express()
+const adminRoute = require("./routes/adminRoutes")
+const userRoutes = require("./routes/userRoutes")
 
 // db connect
 db.connect((err) => {
@@ -21,3 +23,10 @@ app.listen(port, () => console.log(`server starting ${port}`))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
+
+// call 
+
+app.use("/admin", adminRoute)
+
+app.use("/user", userRoutes)
