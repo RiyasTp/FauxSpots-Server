@@ -1,17 +1,13 @@
-const db = require("./config/connection")
+const db = require("./db/connection")
 const express = require("express")
 const app = express()
-const adminRoute = require("./routes/adminRoutes")
+const adminRoutes = require("./routes/adminRoutes")
 const userRoutes = require("./routes/userRoutes")
+const accountRoutes = require("./routes/accountRoutes")
+
 
 // db connect
-db.connect((err) => {
-    if (err) {
-        console.log("Database Error");
-    } else {
-        console.log("Databse Connected");
-    }
-})
+db.on('error', console.error.bind(console, 'Mongodb connection failed'))
 
 // local host
 
@@ -27,6 +23,11 @@ app.use(express.urlencoded({ extended: false }))
 
 // call 
 
-app.use("/admin", adminRoute)
+
+app.use("/admin", adminRoutes)
 
 app.use("/user", userRoutes)
+
+app.use("/account", accountRoutes)
+
+

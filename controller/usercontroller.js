@@ -1,15 +1,24 @@
-var db = require("../config/connection")
-const Promise = require("promise")
-var collection = require("../config/collection")
-const asyncHandler = require('express-async-handler')
-
+const asyncHandler = require("express-async-handler")
+const Product = require("../model/turfaddmodel")
 
 
 module.exports = {
+    getAllData: asyncHandler(async (req, res, next) => {
+        try {
+            Product.find({}, (err, data) => {
+                if (err) {
+                    res.status(401).json({ "status": false })
+                } else {
+                    res.status(200).json(data)
+                }
 
-    getAallProducts: asyncHandler(async (req, res, next) => {
-        let product = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
-        res.statusCode(200).json(product)
+            })
+
+        } catch (error) {
+            res.status(401).json({ "status": false })
+
+        }
+
+
     })
-    
 }
