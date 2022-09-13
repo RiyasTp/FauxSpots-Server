@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer")
+const path = require("path")
+const hbs = require("nodemailer-express-handlebars")
 
 
 module.exports = {
@@ -14,13 +16,30 @@ module.exports = {
             }
 
         });
+
+
+        const handlebarOptions = {
+            viewEngine: {
+                extName: ".handlebars",
+                partialsDir: path.resolve("./view"),
+                defaultLayout: false
+            },
+            viewPath: path.resolve("./view"),
+            extName: ".handlebars"
+        }
+
+        transporter.use("compile", hbs(handlebarOptions))
+
+
         // send mail with defined transport object
         const clindOtpCode = {
             from: process.env.NODEMAILER_USER, // sender address
             to: email, // list of receivers
             subject: 'FauxSpot Email Varification',
-            // text: `Hello ${name},Your FauxSPot app verification code is ${otpCode}`
-            html: { path: 'public/pages/email.html' }
+            template: "email",
+            context: {
+                otp: otpCode
+            }
         }
         transporter.sendMail(clindOtpCode, (error, info) => {
             if (error) reject(error)
