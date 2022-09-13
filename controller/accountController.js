@@ -5,7 +5,8 @@ const crypto = require("crypto")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv").config()
 const { sendOtpEmail } = require("../smshandler/nodemailer")
-let otpGlobal
+const { findOne } = require("../model/signupEmailModel")
+var otpGlobal
 
 
 const createToken = (id) => {
@@ -23,33 +24,66 @@ module.exports = {
         try {
 
             const { user_name, user_mail, user_password, } = req.body
-            const user = User({
-                user_name,
-                user_mail,
-                user_password,
-                user_EmailToken: crypto.randomBytes(64).toString("hex"),
-                user_isVerified: false,
-            })
+
+            const match = await User.findOne({ user_mail: user_mail })
+
+            if (match) {
+
+                res.status(404).json({ "status": false, "message": "user already registerd" })
+
+            } else {
+                const user = User({
+                    user_name,
+                    user_mail,
+                    user_password,
+                    user_EmailToken: crypto.randomBytes(64).toString("hex"),
+                    user_isVerified: false,
+                })
 
 
-            const salt = await bcrypt.genSalt(10)
-            const hashPassword = await bcrypt.hash(user.user_password, salt)
-            user.user_password = hashPassword
+                const salt = await bcrypt.genSalt(10)
+                const hashPassword = await bcrypt.hash(user.user_password, salt)
+                user.user_password = hashPassword
 
 
-            const newUSer = await user.save()
+                const newUSer = await user.save()
 
-            // send a verification mail to user
-            
-            const response = await sendOtpEmail(user.user_mail, user.user_name)
+                // send a verification mail to user
 
-            res.status(200).json({ "status": true })
+                const response = await sendOtpEmail(user.user_mail, user.user_name)
 
+                console.log(typeof response);
+
+                otpGlobal = response
+
+                if (response == null) {
+                    res.status(401).json({ "status": false, "message": "server down" })
+                } else {
+                    res.status(200).json({ "status": true, "message": "otp sented" })
+                }
+            }
 
         } catch (error) {
 
             res.status(401).json({ "status": false, "error": error.message })
 
+        }
+
+    }),
+
+
+    //verify otp
+
+    verifyOtp: asyncHandler(async (req, res, next) => {
+        const { user_otp } = req.body
+        console.log(otpGlobal + "otpp");
+        console.log(user_otp);
+
+        if (user_otp == otpGlobal) {
+            res.status(200).json({ "status": true, "message": "login success" })
+
+        } else {
+            res.status(401).json({ "status": false, "message": "please check otp" })
         }
 
     }),
