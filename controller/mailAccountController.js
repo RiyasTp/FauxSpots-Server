@@ -70,10 +70,10 @@ module.exports = {
     //verify otp
 
     verifyOtp: asyncHandler(async (req, res, next) => {
-        const { user_otp, _id } = req.body
+        const { user_otp, user_id } = req.body
 
         if (user_otp == otpGlobal) {
-            const add = await User.findOneAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
+            const add = await User.findOneAndUpdate({ _id: user_id }, { $set: { user_isVerified: true } })
             res.status(200).json({ "status": true, "message": "login success" , "jwt" : createToken(_id)})
 
         } else {

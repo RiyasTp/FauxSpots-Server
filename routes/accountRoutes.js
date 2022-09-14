@@ -10,6 +10,8 @@ router.post("/login", mailAccountController.login)
 
 router.post("/otp", mailAccountController.verifyOtp)
 
-router.post("/verifyOtp", messageController.mobileSignup)
+router.post("/verifyOtp", messageController.verifyOtp)
+
+router.post("/mobile", messageController.mobileSignup)
 
 module.exports = router

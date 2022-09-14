@@ -24,17 +24,15 @@ module.exports = {
     }),
 
     verifyOtp: asyncHandler(async (req, res, next) => {
-        const { otp, user_number, _id } = req.body
+        const { user_otp, user_number, user_id } = req.body
 
-        const response = await twilio.verifyOtp(user_number, otp)
+        const response = await twilio.verifyOtp(user_number, user_otp)
 
         if (response === 'approved') {
-            const add = await User.findOneAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
-            res.status(200).json({ "status": true, "message": "login success", "jwt": createToken(_id) })
+            const add = await User.findOneAndUpdate({ _id: user_id }, { $set: { user_isVerified: true } })
+            res.status(200).json({ "status": true, "message": "login success", "jwt": createToken(user_id) })
         } else {
             res.status(404).json({ "status": false, })
         }
-
-
     })
 }
