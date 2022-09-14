@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const accountController = require("../controller/accountController")
+const mailAccountController = require("../controller/mailAccountController")
+const messageController = require("../controller/otpAdminController")
 
 
-router.post("/signup", accountController.signup)
+router.post("/signup", mailAccountController.signup)
 
-router.post("/login", accountController.login)
+router.post("/login", mailAccountController.login)
 
-router.post("/otp", accountController.verifyOtp)
+router.post("/otp", mailAccountController.verifyOtp)
+
+router.post("/verifyOtp", messageController.mobileSignup)
 
 module.exports = router

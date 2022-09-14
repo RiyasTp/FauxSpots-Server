@@ -11,8 +11,9 @@ module.exports = {
             const verification = client.verify.v2.services(process.env.TWILIO_SERVIECE_ID)
                 .verifications
                 .create({ to: `+91${Mobilenumber}`, channel: 'sms' })
-            resolve(verification)
+            resolve("verification")
         } catch (err) {
+            console.log("eroorr");
             reject(err)
         }
     }),
