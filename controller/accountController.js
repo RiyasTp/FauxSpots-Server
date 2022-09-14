@@ -5,8 +5,7 @@ const crypto = require("crypto")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv").config()
 const { sendOtpEmail } = require("../smshandler/nodemailer")
-const { findOne } = require("../model/signupEmailModel")
-var otpGlobal
+let otpGlobal
 
 
 const createToken = (id) => {
@@ -20,7 +19,6 @@ module.exports = {
 
     signup: asyncHandler(async (req, res, next) => {
 
-        console.log(req.body);
         try {
 
             const { user_name, user_mail, user_password, } = req.body
@@ -32,6 +30,7 @@ module.exports = {
                 res.status(404).json({ "status": false, "message": "user already registerd" })
 
             } else {
+
                 const user = User({
                     user_name,
                     user_mail,
@@ -40,10 +39,11 @@ module.exports = {
                     user_isVerified: false,
                 })
 
-
                 const salt = await bcrypt.genSalt(10)
                 const hashPassword = await bcrypt.hash(user.user_password, salt)
                 user.user_password = hashPassword
+
+                userUserDeatails = user
 
 
                 const newUSer = await user.save()
@@ -52,14 +52,12 @@ module.exports = {
 
                 const response = await sendOtpEmail(user.user_mail, user.user_name)
 
-                console.log(typeof response);
-
                 otpGlobal = response
 
                 if (response == null) {
                     res.status(401).json({ "status": false, "message": "server down" })
                 } else {
-                    res.status(200).json({ "status": true, "message": "otp sented" })
+                    res.status(200).json({ "status": true, "message": "otp sented", "data": newUSer._id })
                 }
             }
 
@@ -75,11 +73,10 @@ module.exports = {
     //verify otp
 
     verifyOtp: asyncHandler(async (req, res, next) => {
-        const { user_otp } = req.body
-        console.log(otpGlobal + "otpp");
-        console.log(user_otp);
+        const { user_otp, _id } = req.body
 
         if (user_otp == otpGlobal) {
+            const add = await User.findOneAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
             res.status(200).json({ "status": true, "message": "login success" })
 
         } else {
