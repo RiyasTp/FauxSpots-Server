@@ -19,10 +19,17 @@ module.exports = {
     }),
 
     verifyOtp: (Mobilenumber, otp) => new Promise((resolve, reject) => {
-        client.verify.v2.services(process.env.TWILIO_SERVIECE_ID)
+
+        console.log("kgtydfgc");
+        client.verify.services(process.env.TWILIO_SERVIECE_ID)
             .verificationChecks
             .create({ to: `+91${Mobilenumber}`, code: otp })
-            .then(verification_check => resolve(verification_check.status))
+            .then(verification_check => {
+
+                console.log("succsess");
+                resolve(verification_check.status)
+            }
+            )
             .catch((err) => reject(err))
     })
 

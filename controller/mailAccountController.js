@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../model/signupModel")
 const bcrypt = require("bcrypt")
-const crypto = require("crypto")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { sendOtpEmail } = require("../smshandler/nodemailer")
@@ -26,15 +25,13 @@ module.exports = {
             const match = await User.findOne({ user_mail: user_mail })
 
             if (match) {
-
                 res.status(404).json({ "status": false, "message": "user already registerd" })
 
             } else {
-
                 const user = User({
                     user_mail,
+                    user_number: 0000000000,
                     user_password,
-                    user_EmailToken: crypto.randomBytes(64).toString("hex"),
                     user_isVerified: false,
                 })
 
@@ -49,17 +46,17 @@ module.exports = {
                 if (response != null) {
                     await user.save()
                     otpGlobal = response
+                    console.log(otpGlobal);
                 }
 
                 if (response == null) {
                     res.status(401).json({ "status": false, "message": "server down" })
                 } else {
-                    res.status(200).json({ "status": true, "message": "otp sented", "id": newUSer._id })
+                    res.status(200).json({ "status": true, "message": "otp sented", "id": user._id })
                 }
             }
 
         } catch (error) {
-
             res.status(401).json({ "status": false, "error": error.message })
 
         }
@@ -70,11 +67,12 @@ module.exports = {
     //verify otp
 
     verifyOtp: asyncHandler(async (req, res, next) => {
-        const { user_otp, user_id } = req.body
-
+        const { user_otp, _id } = req.body
+        console.log("user otp" + user_otp + "send otp" + otpGlobal);
         if (user_otp == otpGlobal) {
-            const add = await User.findOneAndUpdate({ _id: user_id }, { $set: { user_isVerified: true } })
-            res.status(200).json({ "status": true, "message": "login success" , "jwt" : createToken(_id)})
+            console.log("user otp  " + user_otp + "   send otp  " + otpGlobal);
+            const add = await User.findOneAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
+            res.status(200).json({ "status": true, "message": "login success", "jwt": createToken(_id) })
 
         } else {
             res.status(401).json({ "status": false, "message": "please check otp" })
