@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/faux', { useNewUrlParser: true, useUnifiedTopology: true }).catch((e) => {
+mongoose.connect('mongodb://127.0.0.1:27017/fauxSpot', { useNewUrlParser: true, useUnifiedTopology: true }).catch((e) => {
     console.log('connection error', e.message)
 })
 
