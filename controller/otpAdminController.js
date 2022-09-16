@@ -47,7 +47,6 @@ module.exports = {
                 res.status(404).json({ "status": false, })
             }
         } catch (error) {
-            console.log(" catch error");
             res.status(404).json({ "status": false, })
         }
     })

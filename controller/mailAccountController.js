@@ -85,9 +85,11 @@ module.exports = {
 
     login: asyncHandler(async (req, res, next) => {
 
+
         try {
 
             const { user_mail, user_password } = req.body
+
 
             const findUser = await User.findOne({ user_mail: user_mail })
 
@@ -101,11 +103,11 @@ module.exports = {
 
                     res.status(200).json({ "status": true, "message": "Loged in succsess", "token": token })
                 } else {
-                    res.status(404).json({ "status": false, "message": "Password Dosen't Match" })
+                    res.status(404).json({ "status": false, "message": "Password Dosen't Match"})
                 }
 
             } else {
-                res.status(404).json({ "status": false, "message": "User n't registerd" })
+                res.status(404).json({ "status": false, "message": "User n't registerd"})
             }
 
         } catch (error) {
