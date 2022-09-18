@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { sendOtpEmail } = require("../smshandler/nodemailer")
 let otpGlobal
+const twilio = require("../smshandler/twilio")
 
 
 const createToken = (id) => {
@@ -16,7 +17,7 @@ module.exports = {
 
     // signup
 
-    signup: asyncHandler(async (req, res, next) => {
+    emailSignup: asyncHandler(async (req, res, next) => {
 
         try {
 
@@ -50,14 +51,14 @@ module.exports = {
                 }
 
                 if (response == null) {
-                    res.status(401).json({ "status": false, "message": "server down" })
+                    res.status(401).json({ "status": false, "id": "invalid 401" })
                 } else {
-                    res.status(200).json({ "status": true, "message": "otp sented", "id": user._id })
+                    res.status(200).json({ "status": true, "id": user._id })
                 }
             }
 
         } catch (error) {
-            res.status(401).json({ "status": false, "error": error.message })
+            res.status(401).json({ "status": false, "id": "invalid 401" })
 
         }
 
@@ -66,13 +67,13 @@ module.exports = {
 
     //verify otp
 
-    verifyOtp: asyncHandler(async (req, res, next) => {
+    emailVerifyOtp: asyncHandler(async (req, res, next) => {
         const { user_otp, _id } = req.body
         console.log("user otp" + user_otp + "send otp" + otpGlobal);
         if (user_otp == otpGlobal) {
             console.log("user otp  " + user_otp + "   send otp  " + otpGlobal);
             const add = await User.findOneAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
-            res.status(200).json({ "status": true, "message": "login success", "jwt": createToken(_id) })
+            res.status(200).json({ "status": true, "message": "login success" })
 
         } else {
             res.status(401).json({ "status": false, "message": "please check otp" })
@@ -83,7 +84,7 @@ module.exports = {
 
     //login
 
-    login: asyncHandler(async (req, res, next) => {
+    emailLogin: asyncHandler(async (req, res, next) => {
 
 
         try {
@@ -103,19 +104,64 @@ module.exports = {
 
                     res.status(200).json({ "status": true, "message": "Loged in succsess", "token": token })
                 } else {
-                    res.status(404).json({ "status": false, "message": "Password Dosen't Match"})
+                    res.status(404).json({ "status": false, "message": "Password Dosen't Match", "token": "token" })
                 }
 
             } else {
-                res.status(404).json({ "status": false, "message": "User n't registerd"})
+                res.status(404).json({ "status": false, "message": "User n't registerd", "token": "token" })
             }
 
         } catch (error) {
 
-            res.status(401).json({ "status": false, "error": error.message, "message": "ClientError" })
+            res.status(401).json({ "status": false, "message": "ClientError", "token": "token" })
 
         }
 
-    })
+    }),
 
+
+    // login with number
+
+    mobileSignup: asyncHandler(async (req, res, next) => {
+        const { user_number } = req.body
+        const result = await twilio.sendOtp(user_number)
+        if (result == "verification") {
+            const user = User({
+                user_mail: crypto.randomBytes(64).toString("hex"),
+                user_number,
+                user_password: crypto.randomBytes(64).toString("hex"),
+                user_isVerified: false,
+            })
+
+            await user.save()
+            res.status(200).json({ "status": true, "_id": user._id })
+        } else {
+            res.status(401).json({ "status": false, "_id": "user not found" })
+        }
+
+    }),
+
+    // verify mobile number
+
+    verifyMobile: asyncHandler(async (req, res, next) => {
+        try {
+            const { user_otp, user_number, _id } = req.body
+            console.log(user_otp, user_number, _id);
+            const response = await twilio.verifyOtp(user_number, user_otp)
+
+            console.log(response);
+            console.log("verification progress");
+            if (response === 'approved') {
+                console.log("account verified");
+                const add = await User.findByIdAndUpdate({ _id: _id }, { $set: { user_isVerified: true } })
+                const tokn = createToken(_id)
+                res.status(200).json({ "status": true, "jwt": tokn })
+            } else {
+                console.log("error");
+                res.status(404).json({ "status": false, "jwt": "tokn not found" })
+            }
+        } catch (error) {
+            res.status(404).json({ "status": false, "jwt": "tokn not found" })
+        }
+    })
 }
