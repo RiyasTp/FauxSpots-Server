@@ -2,6 +2,7 @@ const db = require("./db/connection")
 const express = require("express")
 const app = express()
 const accountRoutes = require("./routes/accountRoutes")
+const addRoutes = require("./routes/productRoutes")
 
 
 // db connect
@@ -22,5 +23,7 @@ app.use(express.urlencoded({ extended: false }))
 // call 
 
 app.use("/account", accountRoutes)
+
+app.use("/add", addRoutes)
 
 

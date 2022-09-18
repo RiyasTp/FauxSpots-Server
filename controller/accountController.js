@@ -6,6 +6,7 @@ require("dotenv").config()
 const { sendOtpEmail } = require("../smshandler/nodemailer")
 let otpGlobal
 const twilio = require("../smshandler/twilio")
+const crypto = require("crypto")
 
 
 const createToken = (id) => {
@@ -58,7 +59,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.status(401).json({ "status": false, "id": "invalid 401" })
+            res.status(401).json({ "status": false, "id": `invalid 401 ${error}` })
 
         }
 
