@@ -118,3 +118,4 @@ Pull requests are welcome. For significant changes, please open an issue to disc
 
 Please make sure to update tests as appropriate.
 
+<a href="https://www.buymeacoffee.com/mushthak" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
