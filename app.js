@@ -1,8 +1,6 @@
 const db = require("./db/connection")
 const express = require("express")
 const app = express()
-const adminRoutes = require("./routes/adminRoutes")
-const userRoutes = require("./routes/userRoutes")
 const accountRoutes = require("./routes/accountRoutes")
 
 
@@ -22,11 +20,6 @@ app.use(express.urlencoded({ extended: false }))
 
 
 // call 
-
-
-app.use("/admin", adminRoutes)
-
-app.use("/user", userRoutes)
 
 app.use("/account", accountRoutes)
 
