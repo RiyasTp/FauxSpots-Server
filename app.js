@@ -3,10 +3,15 @@ const express = require("express")
 const app = express()
 const accountRoutes = require("./routes/accountRoutes")
 const addRoutes = require("./routes/productRoutes")
+const cors = require("cors")
+const morgan = require("morgan")
+const colors = require('colors')
 
 
-// db connect
-db.on('error', console.error.bind(console, 'Mongodb connection failed'))
+app.use(cors())
+app.use(morgan('dev'))
+
+db()
 
 // local host
 
@@ -24,6 +29,4 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use("/account", accountRoutes)
 
-app.use("/add", addRoutes)
-
-
+app.use("/admin", addRoutes)

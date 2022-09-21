@@ -1,9 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/fauxSpot', { useNewUrlParser: true, useUnifiedTopology: true }).catch((e) => {
-    console.log('connection error', e.message)
-})
+const connectDB = async () =>{
+    try{
+        const conn= await mongoose.connect(process.env.MONGO_URI)
 
-const db = mongoose.connection
+        console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline)
+    } catch(error){
+        console.log(`MongoDB Not connected ${error}`.red)
+        process.exit(1)
+    }
+}
 
-module.exports = db
+module.exports = connectDB;
