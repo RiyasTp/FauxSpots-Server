@@ -6,10 +6,14 @@ const addRoutes = require("./routes/productRoutes")
 const cors = require("cors")
 const morgan = require("morgan")
 const colors = require('colors')
+const fileUpload = require("express-fileupload")
 
 
+app.use(fileUpload())
 app.use(cors())
 app.use(morgan('dev'))
+
+// db connect
 
 db()
 
