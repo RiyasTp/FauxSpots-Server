@@ -105,11 +105,11 @@ module.exports = {
 
                     res.status(200).json({ "status": true, "message": "Loged in succsess", "token": token })
                 } else {
-                    res.status(404).json({ "status": false, "message": "Password Dosen't Match", "token": "token" })
+                    res.status(401).json({ "status": false, "message": "Password Dosen't Match", "token": "token" })
                 }
 
             } else {
-                res.status(404).json({ "status": false, "message": "User n't registerd", "token": "token" })
+                res.status(401).json({ "status": false, "message": "User n't registerd", "token": "token" })
             }
 
         } catch (error) {
@@ -159,10 +159,10 @@ module.exports = {
                 res.status(200).json({ "status": true, "jwt": tokn })
             } else {
                 console.log("error");
-                res.status(404).json({ "status": false, "jwt": "tokn not found" })
+                res.status(401).json({ "status": false, "jwt": "tokn not found" })
             }
         } catch (error) {
-            res.status(404).json({ "status": false, "jwt": "tokn not found" })
+            res.status(401).json({ "status": false, "jwt": "tokn not found" })
         }
     })
 }
