@@ -22,18 +22,23 @@ const productSchema = new mongoose.Schema(
             }
         ],
         turf_isAvailale: { type: Boolean },
-        turf_images : {type : array},
-        amenities : [
+        turf_amenities : [
             {
-                turf_washroom : {type : Boolean},
-                turf_water : {type : Boolean},
-                turf_dressing : {type : Boolean},
-                turf_parcking : {type : Boolean},
-                turf_gallery : {type : Boolean},
-                turf_cafeteria : {type : Boolean},
+                turf_washroom : { type : Boolean },
+                turf_water : { type : Boolean },
+                turf_dressing : { type : Boolean },
+                turf_parcking : { type : Boolean },
+                turf_gallery : { type : Boolean },
+                turf_cafeteria : { type : Boolean },
             }
         ],
-        turf_images : {type : Array},
+        turf_images : [
+            {
+                turf_images1 : { type : String },
+                turf_images2 : { type : String },
+                turf_images3 : { type : String },
+            }
+        ],
         turf_time: [
             { 
                 time_morning: { type: Number }, 
