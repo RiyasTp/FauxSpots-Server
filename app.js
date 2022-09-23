@@ -31,4 +31,4 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use("/account", accountRoutes)
 
-app.use("/vendor", productRoutes);
+app.use("/vendor", productRoutes)

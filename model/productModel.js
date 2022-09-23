@@ -5,47 +5,47 @@ const productSchema = new mongoose.Schema(
         turf_creator_id: { type: String },
         turf_name: { type: String },
         turf_place: { type: String },
-        turf_muncipality : { type: String },
-        turf_district : {type: String },
-        turf_catogery : [
-            {
-                turf_cricket : {type: Boolean },
-                turf_football : {type: Boolean },
-                turf_badminton : {type: Boolean },
-                turf_yoga : {type: Boolean },
-            }
-        ],
-        turf_type : [
-            {
-                turf_sevens : {type: Boolean },
-                turf_sixes : {type: Boolean },
-            }
-        ],
-        turf_isAvailale: { type: Boolean },
-        turf_amenities : [
-            {
-                turf_washroom : { type : Boolean },
-                turf_water : { type : Boolean },
-                turf_dressing : { type : Boolean },
-                turf_parcking : { type : Boolean },
-                turf_gallery : { type : Boolean },
-                turf_cafeteria : { type : Boolean },
-            }
-        ],
-        turf_images : [
-            {
-                turf_images1 : { type : String },
-                turf_images2 : { type : String },
-                turf_images3 : { type : String },
-            }
-        ],
-        turf_time: [
-            { 
-                time_morning: { type: Number }, 
-                time_afternoon : { type: Number },
-                time_evening :  { type: Number },
-            }
-        ]
+        turf_muncipality: { type: String },
+        turf_district: { type: String },
+        turf_catogery:
+        {
+            turf_cricket: { type: String },
+            turf_football: { type: String },
+            turf_badminton: { type: String },
+            turf_yoga: { type: String },
+        }
+        ,
+        turf_type:
+        {
+            turf_sevens: { type: String },
+            turf_sixes: { type: String },
+        }
+        ,
+        turf_isAvailale: { type: String },
+        amenities:
+        {
+            turf_washroom: { type: String },
+            turf_water: { type: String },
+            turf_dressing: { type: String },
+            turf_parcking: { type: String },
+            turf_gallery: { type: String },
+            turf_cafeteria: { type: String },
+        }
+        ,
+        turf_images:
+        {
+            turf_images1: { type: String },
+            turf_images2: { type: String },
+            turf_images3: { type: String },
+        }
+        ,
+        turf_time:
+        {
+            time_morning: { type: String },
+            time_afternoon: { type: String },
+            time_evening: { type: String },
+        }
+
     }
 )
 
