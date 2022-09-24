@@ -7,6 +7,7 @@ const cors = require("cors")
 const morgan = require("morgan")
 const colors = require('colors')
 const bodyParser = require("body-parser");
+const fetchRoutes = require("./routes/fetchRoutes")
 
 // db connect
 
@@ -32,3 +33,5 @@ app.use(express.urlencoded({ extended: false }))
 app.use("/account", accountRoutes)
 
 app.use("/vendor", productRoutes)
+
+app.use("/user" , fetchRoutes)
