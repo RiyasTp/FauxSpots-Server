@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const Product = require("../model/productModel")
 require("dotenv").config()
+const cloudinaryUploadImg = require("../middlewares/cloudinary");
 
 module.exports = {
 
@@ -13,8 +14,12 @@ module.exports = {
       const turf_images2Obj = req.files.turf_images2[0].path
       const turf_images3Obj = req.files.turf_images3[0].path
 
-      const dbObj = req.body
+      const image1 = await cloudinaryUploadImg(turf_images1Obj);
+      const image2 = await cloudinaryUploadImg(turf_images2Obj);
+      const image3 = await cloudinaryUploadImg(turf_images3Obj);
 
+
+      const dbObj = req.body
 
 
       const product = Product({
@@ -50,9 +55,9 @@ module.exports = {
         ,
         turf_images:
         {
-          turf_images1: turf_images1Obj,
-          turf_images2: turf_images2Obj,
-          turf_images3: turf_images3Obj
+          turf_images1: image1.url,
+          turf_images2: image2.url,
+          turf_images3: image3.url
         }
         ,
         turf_time:
