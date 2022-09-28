@@ -15,6 +15,13 @@ module.exports = {
       const turf_images3Obj = req.files.turf_images3[0].path
       
 
+<<<<<<< HEAD
+=======
+      const image1 = await cloudinaryUploadImg(turf_images1Obj);
+      const image2 = await cloudinaryUploadImg(turf_images2Obj);
+      const image3 = await cloudinaryUploadImg(turf_images3Obj);
+
+>>>>>>> bb3094e0f18b1206a4c17afc390959e925324ae4
 
       const dbObj = req.body
 
@@ -44,6 +51,7 @@ module.exports = {
           turf_parcking: dbObj.turf_parcking,
           turf_gallery: dbObj.turf_gallery,
           turf_cafeteria: dbObj.turf_cafeteria
+<<<<<<< HEAD
         },
         turf_images: {
           turf_images1: turf_images1Obj,
@@ -51,6 +59,19 @@ module.exports = {
           turf_images3: turf_images3Obj
         },
         turf_time: {
+=======
+        }
+        ,
+        turf_images:
+        {
+          turf_images1: image1.url,
+          turf_images2: image2.url,
+          turf_images3: image3.url
+        }
+        ,
+        turf_time:
+        {
+>>>>>>> bb3094e0f18b1206a4c17afc390959e925324ae4
           time_morning: dbObj.time_morning,
           time_afternoon: dbObj.time_afternoon,
           time_evening: dbObj.time_evening

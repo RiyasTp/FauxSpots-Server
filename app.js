@@ -16,8 +16,9 @@ db()
 
 // local host
 
+const hostname = '0.0.0.0';
 const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`server starting ${port}`.america))
+app.listen(port,hostname , () => console.log(`server starting http://${hostname}:${port}/`.yellow))
 
 
 //json converter
