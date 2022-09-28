@@ -28,7 +28,6 @@
     "promise": "^8.2.0",
     "twilio": "^3.82.0",
     "nodemon": "^2.0.20"
-
   },
   "devDependencies": {
   }
