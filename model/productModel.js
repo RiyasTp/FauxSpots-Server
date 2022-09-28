@@ -21,8 +21,8 @@ const productSchema = new mongoose.Schema(
             turf_sixes: { type: Boolean },
         }
         ,
-        turf_isAvailale: { type: Boolean },
-        amenities:
+        turf_isAvailable: { type: Boolean },
+        turf_amenities:
         {
             turf_washroom: { type: Boolean },
             turf_water: { type: Boolean },
@@ -44,6 +44,9 @@ const productSchema = new mongoose.Schema(
             time_morning: { type: String },
             time_afternoon: { type: String },
             time_evening: { type: String },
+        },
+        turf_ratings : {
+            turf_rating : { type : Number}
         }
 
     }

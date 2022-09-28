@@ -126,17 +126,33 @@ module.exports = {
 
     mobileSignup: asyncHandler(async (req, res, next) => {
         const { user_number } = req.body
-        const result = await twilio.sendOtp(user_number)
-        if (result == "verification") {
-            const user = User({
-                user_mail: crypto.randomBytes(64).toString("hex"),
-                user_number,
-                user_password: crypto.randomBytes(64).toString("hex"),
-                user_isVerified: false,
-            })
 
-            await user.save()
-            res.status(200).json({ "status": true, "_id": user._id })
+        const result = await twilio.sendOtp(user_number)
+
+        if (result == "verification") {
+            const findNumber = await User.findOne({ user_number: user_number })
+
+
+
+            if (!findNumber) {
+                const user = User({
+                    user_mail: crypto.randomBytes(64).toString("hex"),
+                    user_number,
+                    user_password: crypto.randomBytes(64).toString("hex"),
+                    user_isVerified: false,
+                })
+
+                await user.save()
+
+                res.status(200).json({ "status": true, "_id": user._id })
+            } else {
+
+                res.status(401).json({ "status": "gfastyjhgfjy", "_id": User._id })
+
+            }
+
+
+
         } else {
             res.status(401).json({ "status": false, "_id": "user not found" })
         }
