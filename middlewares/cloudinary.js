@@ -1,8 +1,4 @@
 const  cloudinary = require('cloudinary');
-<<<<<<< HEAD
-require('dotenv').config({ path: '/.env' })
-=======
->>>>>>> bb3094e0f18b1206a4c17afc390959e925324ae4
 
 
 cloudinary.config({ 
